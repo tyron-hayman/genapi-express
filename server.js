@@ -41,7 +41,7 @@ app.use(cors({
 }));
 
 // Handle preflight requests explicitly
-app.options('*', cors());
+app.options('/api/chat', cors());
 app.use(express.json()); // For parsing application/json
 
 // Serve your Vue app's static files
