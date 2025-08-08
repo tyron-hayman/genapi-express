@@ -24,8 +24,11 @@ const allowedOrigins = [
 
 // Use CORS to allow requests from your Vue app's origin
 app.use(cors({
-    origin: allowedOrigins // Only allow requests from your local Vue app
+    origin: allowedOrigins, // Only allow requests from your local Vue app
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
+app.options('*', cors());
 app.use(express.json()); // For parsing application/json
 
 // Serve your Vue app's static files
