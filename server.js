@@ -17,8 +17,15 @@ const __dirname = dirname(__filename);
 const app = express();
 const port = process.env.PORT || 3000;
 
+const allowedOrigins = [
+    'http://localhost:5173', // Your development environment
+    'https://tyronhayman.me', // Your deployed Vue app
+  ];
+
 // Use CORS to allow requests from your Vue app's origin
-app.use(cors());
+app.use(cors({
+    origin: allowedOrigins // Only allow requests from your local Vue app
+}));
 app.use(express.json()); // For parsing application/json
 
 // Serve your Vue app's static files
