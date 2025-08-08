@@ -20,14 +20,27 @@ const port = process.env.PORT || 3000;
 const allowedOrigins = [
     'http://localhost:5173', // Your development environment
     'https://tyronhayman.me', // Your deployed Vue app
+    'https://tyronhayman.vercel.app', // Your Vercel frontend if different
   ];
 
 // Use CORS to allow requests from your Vue app's origin
 app.use(cors({
-    origin: allowedOrigins, // Only allow requests from your local Vue app
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
     methods: ['GET', 'POST', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Handle preflight requests explicitly
 app.options('*', cors());
 app.use(express.json()); // For parsing application/json
 
